@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/DeepInfiniteVoid/Ref-Net#readme",
   "dependencies": {
+    "body-parser": "^1.19.2",
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
