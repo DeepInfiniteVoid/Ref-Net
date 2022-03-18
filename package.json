@@ -2,10 +2,12 @@
   "name": "ref-net",
   "version": "1.0.0",
   "description": "The Inter BITS Referral Solution",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "mocha server/tests/apiTests --timeout 5000",
-    "start": "nodemon server.js"
+    "server": "nodemon server.js",
+    "client": "cd client && npm run start",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,7 @@
   "dependencies": {
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
@@ -30,6 +33,7 @@
     "passport-google-oauth2": "^0.2.0"
   },
   "devDependencies": {
+    "concurrently": "^7.0.0",
     "nodemon": "^2.0.15"
   }
 }

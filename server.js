@@ -3,11 +3,13 @@ const passport = require('passport');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const userSchema = require('./server/models/userModel');
+const cors = require('cors');
 require('dotenv').config()
 
 const app = express();
-
-app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(cors());
+app.options('*', cors())
+app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
