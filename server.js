@@ -22,6 +22,14 @@ mongoose.model('users', userSchema);
 require('./server/controllers/userController');
 require('./server/routes/userRoutes')(app);
 
-app.listen(process.env.SV_PORT, () => { console.log(`Server running on PORT : ${process.env.SV_PORT}`) });
+const path = require("path")
+
+app.use(express.static(path.join(__dirname, "client", "build")))
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
+app.listen(process.env.PORT || process.env.SV_PORT, () => { console.log(`Server running on PORT : ${process.env.SV_PORT}`) });
 
 module.exports = app;

@@ -6,10 +6,6 @@ module.exports = (app) => {
         req.user ? next() : res.redirect('/')
     }
 
-    app.get('/', (req, res) => {
-        res.send('<a href="/auth/google">Authenticate with Google</a>')
-    });
-
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
     app.get('/auth/google/callback',

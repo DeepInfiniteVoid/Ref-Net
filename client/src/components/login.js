@@ -15,7 +15,7 @@ export default function App() {
                 </Typography></Box>
             </Grid>
             <Grid item xs={6} sx={stylesheet.mainLeaf}>
-                <Button startIcon={stylesheet.googleIcon} sx={stylesheet.signInButton} theme={stylesheet.TypographyTheme} href='http://localhost:5000/auth/google'>Sign in with Google</Button>
+                <Button startIcon={stylesheet.googleIcon} sx={stylesheet.signInButton} theme={stylesheet.TypographyTheme} href='/auth/google'>Sign in with Google</Button>
             </Grid>
             <Grid item xs={2} sx={stylesheet.gridItem}>
                 <img src='./bits-logo.svg' style={stylesheet.bitsLogo} alt='Bits-Logo' />

@@ -9,7 +9,7 @@ const User = mongoose.model('users');
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `http://localhost:${process.env.SV_PORT}/auth/google/callback`,
+    callbackURL: `/auth/google/callback`,
     proxy: true
 },
     async (request, accessToken, refreshToken, profile, done) => {
