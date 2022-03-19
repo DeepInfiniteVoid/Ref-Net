@@ -4,22 +4,15 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const userSchema = require('./server/models/userModel');
-<<<<<<< HEAD
 const cors = require('cors');
+const postSchema = require('./server/models/postModel');
 require('dotenv').config()
 
 const app = express();
 app.use(cors());
 app.options('*', cors());
-app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
-=======
-const postSchema = require('./server/models/postModel');
-require('dotenv').config()
-
-const app = express();
 app.use(bodyParser.json());
-app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
->>>>>>> 23b20ae (Setup API for Post CRUD Operations)
+app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
