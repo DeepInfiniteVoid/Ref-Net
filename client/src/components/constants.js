@@ -31,7 +31,43 @@ const FormComponentObject = () => {
     });
 };
 
+const posts = [
+    {
+        companyName : "PhonePe",
+        role : "SDE-1",
+        costToCompany : "20lpa",
+        location: ["Bangalore"],
+        yearsOfExperience : 0
+
+    },
+    {
+        companyName: "Amazon",
+        role: "SDE-1",
+        costToCompany: "45lpa",
+        location: ["Bangalore", "Mumbai", "Hyderabad", "Chennai"],
+        yearsOfExperience: 0
+
+    },
+    {
+        companyName: "Google",
+        role: "SDE-1",
+        costToCompany: "33lpa",
+        location: ["Bangalore", "Hyderabad"],
+        yearsOfExperience: 0
+
+    },
+    {
+        key: 1,
+        id: 1,
+        companyName: "Microsoft",
+        role: "SDE-1",
+        costToCompany: "44lpa",
+        location: ["Bangalore", "Hyderabad"],
+        yearsOfExperience: 0
+
+    }
+]
 FormComponentObject();
 
 export default filters;
-export { formComponentObject, locations };
+export { formComponentObject, locations, posts };
