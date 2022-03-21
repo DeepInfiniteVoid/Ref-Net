@@ -1,34 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, IconButton, Stack, Typography, Button, Container, AppBar, Toolbar, Icon } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
-import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
-import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Slider from '@mui/material/Slider';
+// import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
+// import Divider from '@mui/material/Divider';
+// import MenuItem from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+// import Select from '@mui/material/Select';
+// import Slider from '@mui/material/Slider';
 
 import CurrencyRupeeTwoToneIcon from '@mui/icons-material/CurrencyRupeeTwoTone';
 import LocationOnTwoToneIcon from '@mui/icons-material/LocationOnTwoTone';
 import WorkHistoryTwoToneIcon from '@mui/icons-material/WorkHistoryTwoTone';
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import SearchIcon from '@mui/icons-material/Search';
-
 import * as stylesheet from '../styles/dashboardStyles';
+import FormComponent from './FormComponent';
+
+// import filters from './constants';
 
 function App() {
-
-    const [location, setLocation] = useState('');
-
-    const handleLocationChange = (event) => {
-        setLocation(event.target.value);
-    };
-
-    const [salary, setSalary] = useState([0, 100]);
-
-    const handleSalaryFilter = (event, newValue) => {
-        setSalary(newValue);
-    }
 
     return (
         <div>
@@ -41,8 +31,11 @@ function App() {
                     <Button color="inherit" theme={stylesheet.TypographyTheme}>Login</Button>
                 </Toolbar>
             </AppBar>
+
+
             <Grid container>
-                <Grid item xs={3} sx={stylesheet.filterLeaf}>
+                <FormComponent />
+                {/* <Grid item xs={3} sx={stylesheet.filterLeaf}>
                     <Stack direction='column'>
                         <Container>
                             <Grid container>
@@ -52,40 +45,18 @@ function App() {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12} sm={6} sx={{ marginTop: '4px', marginBottom: '4px' }}>
-                                    <Button sx={stylesheet.clearButton} theme={stylesheet.TypographyTheme}>
+                                    <Button sx={stylesheet.clearButton} theme={stylesheet.TypographyTheme} onClick = {clearAll}>
                                         Clear All
                                     </Button>
                                 </Grid>
                             </Grid>
                         </Container>
                         <Divider />
-                        <Container>
-                            <Typography theme={stylesheet.TypographyTheme}>Sector</Typography>
-                            <FormGroup>
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>IT</Typography>} />
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>Core</Typography>} />
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>Finance</Typography>} />
-                            </FormGroup>
+                        <Container id="FormContainer">
+                            {filters.map(renderFormGroupLabelContainer)}
                         </Container>
-                        <Divider />
-                        <Container>
-                            <Typography theme={stylesheet.TypographyTheme}>Role</Typography>
-                            <FormGroup>
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>SDE</Typography>} />
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>Analyst</Typography>} />
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>Lead Engineer</Typography>} />
-                            </FormGroup>
-                        </Container>
-                        <Divider />
-                        <Container>
-                            <Typography theme={stylesheet.TypographyTheme}>Company</Typography>
-                            <FormGroup>
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>Amazon</Typography>} />
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>Microsoft</Typography>} />
-                                <FormControlLabel control={<Checkbox defaultUnchecked sx={stylesheet.filterCheckBox} />} label={<Typography theme={stylesheet.TypographyTheme}>Google</Typography>} />
-                            </FormGroup>
-                        </Container>
-                        <Divider />
+                        
+
                         <Container>
                             <Typography theme={stylesheet.TypographyTheme}>Location</Typography>
                             <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
@@ -111,7 +82,7 @@ function App() {
                             />
                         </Container>
                     </Stack>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={9}>
                     <Stack direction="row" spacing={2} justifyContent='flex-end' sx={{ margin: '20px 0px 20px 5px' }}>
                         <IconButton aria-label="search" sx={stylesheet.searchButton}>
