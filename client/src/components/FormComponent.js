@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Stack, Typography, Button, Container } from '@mui/material';
-//import { IconButton, AppBar, Toolbar, Icon } from '@mui/material';
-//import CreateIcon from '@mui/icons-material/Create';
+
 import { FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,11 +8,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
 
-// import CurrencyRupeeTwoToneIcon from '@mui/icons-material/CurrencyRupeeTwoTone';
-// import LocationOnTwoToneIcon from '@mui/icons-material/LocationOnTwoTone';
-// import WorkHistoryTwoToneIcon from '@mui/icons-material/WorkHistoryTwoTone';
-// import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
-// import SearchIcon from '@mui/icons-material/Search';
 
 import * as stylesheet from '../styles/dashboardStyles';
 
@@ -75,7 +69,6 @@ function App() {
 
     const handleLocationChange = (event) => {
         const { value } = event.target;
-        console.log(value);
         setLocation(value);
     };
 
