@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import * as stylesheet from '../styles/dashboardStyles';
 import Posts from './posts';
 import FormComponent from './FormComponent';
+import Create from './Create'
 
 
 
@@ -33,7 +34,7 @@ function App() {
                             <SearchIcon />
                         </IconButton>
                         <IconButton aria-label="create" sx={stylesheet.createButton}>
-                            <CreateIcon />
+                            <Create />
                         </IconButton>
                     </Stack>
                     <Stack spacing={2}>
