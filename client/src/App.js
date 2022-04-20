@@ -4,6 +4,8 @@ import './App.css';
 
 import Login from './components/login';
 import Dashboard from './components/dashboard';
+import Profile from './components/profile';
+import Post from './components/post';
 
 export default function App() {
     return (
@@ -12,6 +14,8 @@ export default function App() {
                 <Routes>
                     <Route path='/' element={<Login />} />
                     <Route path='/dashboard' element={<Dashboard />} />
+                    <Route path='/profile' element={<Profile />} />
+                    <Route path='/post' element={<Post />} />
                 </Routes>
             </BrowserRouter>
         </div>

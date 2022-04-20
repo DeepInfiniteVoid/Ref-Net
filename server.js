@@ -18,14 +18,14 @@ app.use(passport.session());
 
 const URI = process.env.MONGODB_URI;
 mongoose.connect(URI, { useNewUrlParser: true }).then(
-    () => { },
-    err => { console.log('ERROR : Can not connect to DB\n' + err) }
+    () => { console.log('DB : Connected') },
+    err => { console.log('ERROR : Cannot connect to DB\n' + err) }
 );
 mongoose.model('users', userSchema);
 mongoose.model('posts', postSchema);
 require('./server/controllers/userController');
-require('./server/routes/userRoutes')(app);
-require('./server/routes/postsApi')(app);
+require('./server/routes/authRoutes')(app);
+require('./server/routes/postsRoutes')(app);
 
 const path = require("path")
 

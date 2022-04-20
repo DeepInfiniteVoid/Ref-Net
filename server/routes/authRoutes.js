@@ -10,7 +10,7 @@ module.exports = (app) => {
 
     app.get('/auth/google/callback',
         passport.authenticate('google', {
-            successRedirect: '/home',
+            successRedirect: '/dashboard',
             failureRedirect: '/auth/google/failure'
         }));
 
@@ -18,8 +18,11 @@ module.exports = (app) => {
         res.send('Something went Wrong')
     })
 
-    app.get('/home', isLoggedIn, (req, res) => {
-        res.send('Hello User!')
+    app.get('/api/current_user', isLoggedIn, (req, res) => {
+
+        const current_user = req.user;
+
+        res.send(current_user);
     });
 }
 

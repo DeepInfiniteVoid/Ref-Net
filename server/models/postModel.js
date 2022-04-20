@@ -2,13 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-    description: String,
-    authorGID: String,
-    dateCreated: { type: Date, default: Date.now() },
+    sector: String,
     role: String,
     company: String,
     experience: String,
-    location: String
+    salary: String,
+    location: String,
+    description: String,
+    authorGID: String,
+    dateCreated: { type: Date, default: Date.now() },
+    dateUpdated: { type: Date, default: Date.now() }
 });
 
 module.exports = postSchema;
