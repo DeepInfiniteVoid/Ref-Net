@@ -39,23 +39,29 @@ export default function Profile() {
 
     const sectors = [{ name: 'IT', value: 'IT' }, { name: 'Finance', value: 'Finance' }, { name: 'Non-Tech', value: 'Non-Tech' }]
 
-    const [form, setForm] = React.useState({
+    const [formOpen, setFormOpen] = React.useState(false);
 
-        isOpen: false,
-        type: 'create',
-        postId: null
+    const [mode, setMode] = React.useState({ type: 'Create', postId: null });
 
-    });
+    const handleFormOpen = () => { setFormOpen(true) };
+
+    const handleFormClose = () => {
+
+        setFormOpen(false);
+
+        setFormData(emptyForm);
+
+    };
 
     const emptyForm = {
         sector: '',
         description: '',
-        gid: '',
         role: '',
         salary: '',
         company: '',
         experience: '',
-        location: ''
+        location: '',
+        dt: null
     }
 
     let [formData, setFormData] = React.useState(emptyForm);
@@ -66,27 +72,64 @@ export default function Profile() {
 
     };
 
-    const handleSubmit = async () => {
+    const handleCreate = (post) => {
+
+        setMode({ type: 'Create', postId: null });
+
+        setFormData(emptyForm);
+
+        handleFormOpen();
+
+    }
+
+    const handleShare = (post) => {
+
+        navigator.clipboard.writeText(`${window.location.host}/post?postId=${post._id}`);
+
+        console.log('Post-ID Copied to Clipboard');
+    };
+
+    const handleDelete = async (post) => {
+
+        const res = await axios.post('/api/delete', { postId: post._id });
+
+        console.log(res);
+
+    }
+
+    const handleEdit = (post) => {
+
+        const dateUpdated = new Date();
+
+        console.log(post);
+
+        setFormData({
+            gid: post.authorGID,
+            dt: dateUpdated,
+            ...post
+        });
+
+        setMode({ type: 'Update', postId: post._id });
 
         console.log(formData);
 
-        if (form.type === 'create') {
+        handleFormOpen();
 
-            await axios.post('/api/create', formData).then((res) => {
+    }
 
-                console.log(res);
+    const handleSubmit = async () => {
 
-            }).catch((err) => {
+        if (mode.type === 'Update') {
 
-                console.log(err);
+            const res = await axios.post('/api/update', { ...formData, postId: mode.postId });
 
-            });
+            console.log(res);
 
         } else {
 
-            const dateUpdated = new Date();
+            const res = await axios.post('/api/create', { ...formData, gid: profile.gid });
 
-            await axios.post('/api/update', { ...formData, dt: dateUpdated, postId: form.postId }).then((res) => console.log(res)).catch((err) => console.log(err));
+            console.log(res);
 
         }
 
@@ -94,78 +137,22 @@ export default function Profile() {
 
     }
 
-    const handleCreate = () => {
-
-        setForm({ type: 'create', isOpen: true })
-
-    }
-
-    const handleShare = (postId) => {
-
-        navigator.clipboard.writeText(`${window.location.host}/post?postId=${postId}`);
-    };
-
-    const handleDelete = async (postId) => {
-
-        await axios.post('/api/delete', { postId: postId }).then((res) => {
-
-            console.log(res)
-
-        }).catch((err) => {
-
-            console.log(err);
-
-        });
-
-    }
-
-    const handleEdit = async (postId) => {
-
-        await axios.get('/api/posts/fetch', { postId: postId }).then(async (post) => {
-
-            setFormData({
-                gid: post.data.authorGID,
-                ...post.data
-            });
-
-        }).catch((err) => console.log(err));
-
-        setForm({ type: 'edit', isOpen: true, postId: postId });
-
-    }
-
-    const handleFormClose = () => {
-
-        setForm({ type: 'create', isOpen: false, postId: null });
-
-        setFormData(emptyForm);
-
-    }
-
     React.useEffect(() => {
 
-        async function fetchUserData() {
+        const fetchData = async () => {
 
-            await axios.get('/api/current_user').then((res) => {
+            const authRes = await axios.get('/api/current_user');
 
-                setProfile({ name: res.data.username, email: res.data.email, gid: res.data.googleId });
+            const postRes = await axios.post('/api/fetch/user', { gid: authRes.data.googleId });
 
-            }).then(async () => {
+            setUserPosts(postRes.data);
 
-                await axios.post('/api/fetch/user', { gid: profile.gid }).then((res) => {
-
-                    setUserPosts(res.data);
-
-                })
-
-            }).catch((err) => console.log(`Could Not Fetch\n ${err}`));
-
+            setProfile({ name: authRes.data.username, gid: authRes.data.googleId, email: authRes.data.email });
         }
 
-        fetchUserData();
+        fetchData();
 
-    }, [profile.gid]);
-
+    }, [])
 
 
     return (
@@ -173,7 +160,7 @@ export default function Profile() {
             <Grid item xs={5} sm={4} md={2.5} sx={{ display: 'flex', height: '100vh', backgroundColor: '#076AE1' }}>
                 <Grid container>
                     <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar sx={{ backgroundColor: '#ffad33', width: '90px', height: '90px', fontSize: '40px', margin: 'auto', border: 'solid 2px black' }}>{profile.name.substring(0, 1)}</Avatar>
+                        <Avatar sx={{ backgroundColor: '#ffad33', width: '90px', height: '90px', fontSize: '40px', margin: 'auto', border: 'solid 2px black' }}>{profile.name ? profile.name.substring(0, 1) : ''}</Avatar>
                     </Grid>
                     <Grid item xs={12}>
                         <Stack sx={{ width: '100%' }} spacing={2}>
@@ -204,7 +191,7 @@ export default function Profile() {
                         </IconButton>
                     </Stack>
                     <Modal
-                        open={form.isOpen}
+                        open={formOpen}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                     >
@@ -259,7 +246,7 @@ export default function Profile() {
                                 <Input
                                     fullWidth
                                     id="outlined-adornment-weight"
-                                    value={formData.exp}
+                                    value={formData.experience}
                                     onChange={handleFormData('experience')}
                                     endAdornment={<InputAdornment position="end">Yrs</InputAdornment>}
                                     aria-describedby="outlined-weight-helper-text"
@@ -278,7 +265,7 @@ export default function Profile() {
                                     fullWidth
                                 />
                                 <Stack direction='row' spacing={2}>
-                                    <Button variant='contained' onClick={handleSubmit}>Submit</Button>
+                                    <Button variant='contained' onClick={handleSubmit}>{mode.type}</Button>
                                     <Button variant='contained' onClick={handleFormClose}>Cancel</Button>
                                 </Stack>
                             </Box>
@@ -306,13 +293,13 @@ export default function Profile() {
                                     <IconButton aria-label="view" sx={{ color: '#33c2ff' }} href={`/post?postId=${post._id}`}>
                                         <VisibilityIcon />
                                     </IconButton>
-                                    <IconButton aria-label="share" color='primary' onClick={handleShare(post._id)}>
+                                    <IconButton aria-label="share" color='primary' onClick={() => { handleShare(post) }}>
                                         <ShareIcon />
                                     </IconButton>
-                                    <IconButton aria-label="edit" color='success' onClick={console.log('edit')}>
+                                    <IconButton aria-label="edit" color='success' onClick={() => { handleEdit(post) }}>
                                         <EditIcon />
                                     </IconButton>
-                                    <IconButton aria-label="delete" sx={{ color: '#F34B4B' }} onClick={console.log('delete')}>
+                                    <IconButton aria-label="delete" sx={{ color: '#F34B4B' }} onClick={() => { handleDelete(post) }}>
                                         <DeleteForeverIcon />
                                     </IconButton>
                                 </CardActions>
