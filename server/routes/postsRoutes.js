@@ -13,7 +13,7 @@ module.exports = (app) => {
         })
     });
 
-    app.get('/api/fetch/user', (req, res) => {
+    app.post('/api/fetch/user', (req, res) => {
 
         if (req.body.gid) {
             Post.find({ authorGID: req.body.gid }).then((post) => {
@@ -30,16 +30,37 @@ module.exports = (app) => {
 
     });
 
+    app.get('/api/posts/fetch', (req, res) => {
+
+        if (req.query.postId) {
+
+            Post.find({ _id: req.query.postId }).then((post) => {
+
+                res.send(post[0]);
+
+            }).catch((err) => {
+                res.status(404);
+                res.send('No Post Found')
+            })
+
+        } else {
+            res.status(400);
+            res.send('PostId is Null')
+        }
+
+    });
+
     app.post('/api/create', (req, res) => {
 
         Post.create({
-            description: req.body.desc,
+            sector: req.body.sector,
+            description: req.body.description,
             authorGID: req.body.gid,
-            dateCreated: req.body.dt,
             role: req.body.role,
+            salary: req.body.salary,
             company: req.body.company,
-            experience: req.body.exp,
-            location: req.body.loc
+            experience: req.body.experience,
+            location: req.body.location
         }).then(() => {
             res.status(200);
             res.send("Success");
@@ -52,14 +73,16 @@ module.exports = (app) => {
     app.post('/api/update', (req, res) => {
 
         if (req.body.postId) {
-            Post.findOneAndUpdate({ _id: req.body.postId }, {
-                description: req.body.desc,
+            Post.findOneAndUpdate({
+                _id: req.body.postId
+            }, {
+                description: req.body.description,
                 authorGID: req.body.gid,
-                dateCreated: req.body.dt,
+                dateUpdated: req.body.dt,
                 role: req.body.role,
                 company: req.body.company,
-                experience: req.body.exp,
-                location: req.body.loc
+                experience: req.body.experience,
+                location: req.body.location
             }).then(() => {
                 res.status(200);
                 res.send(`Updated Successfully`);
@@ -76,7 +99,7 @@ module.exports = (app) => {
     app.post('/api/delete', (req, res) => {
 
         if (req.body.postId) {
-            Post.findOneAndDelete({ _id: req.body.postId }).then(() => {
+            Post.findByIdAndDelete({ _id: req.body.postId }).then(() => {
                 res.status(200);
                 res.send("Post Deleted Successfully");
             }).catch((err) => {
