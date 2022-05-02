@@ -44,7 +44,7 @@ module.exports = (app) => {
             })
 
         } else {
-            res.status(400);
+            res.status(402);
             res.send('PostId is Null')
         }
 

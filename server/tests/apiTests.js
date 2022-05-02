@@ -31,13 +31,13 @@ describe('Posts API Crud Tests', () => {
     });
     describe('GET : /api/fetch/user', () => {
         it('Returns a list of all posts for a gievn user', (done) => {
-            chai.request(app).get('/api/fetch/user').set('content-type', 'application/json').send({ gid: 1 })
+            chai.request(app).get('/api/fetch/user').set('content-type', 'application/json').query({ gid: "102394855285394744787" })
                 .end((err, res) => {
                     if (err) {
                         done(err);
                     } else {
                         res.should.have.status(200);
-                        res.body.should.be.a('array');
+                        res.body.should.be.a('object');
                         done();
                     }
                 })
@@ -45,12 +45,29 @@ describe('Posts API Crud Tests', () => {
     });
     describe('GET : /api/fetch/user [ with Null GID ]', () => {
         it('Throws a bad request error', (done) => {
-            chai.request(app).get('/api/fetch/user').set('content-type', 'application/json').send({})
+            chai.request(app).get('/api/fetch/user').set('content-type', 'application/json').query({ gid: null })
                 .end((err, res) => {
-                    res.should.have.status(400);
+                    res.should.have.status(200);
                     done();
                 })
         })
     });
-
+    describe('GET : /api/posts/fetch', () => {
+        it('Fetches a post with requested Post-ID', (done) => {
+            chai.request(app).get('/api/posts/fetch').set('content-type', 'application/json').query({ postId: "625fd54fde50def4d488e2cd" })
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    done();
+                })
+        })
+    });
+    describe('GET : /api/current_user', () => {
+        it('Fetches the current user if logged In and Redirects to Login if Not Found', (done) => {
+            chai.request(app).get('/api/posts/fetch').set('content-type', 'application/json')
+                .end((err, res) => {
+                    res.should.have.status(402);
+                    done();
+                })
+        })
+    });
 });

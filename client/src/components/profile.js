@@ -20,14 +20,16 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CreateIcon from '@mui/icons-material/Create';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import axios from 'axios';
 
 export default function Profile() {
+
+    let [isLoading, setLoading] = React.useState(true);
 
     let [profile, setProfile] = React.useState({
         name: '',
@@ -95,6 +97,8 @@ export default function Profile() {
 
         console.log(res);
 
+        setLoading(true);
+
     }
 
     const handleEdit = (post) => {
@@ -125,11 +129,15 @@ export default function Profile() {
 
             console.log(res);
 
+            setLoading(true);
+
         } else {
 
             const res = await axios.post('/api/create', { ...formData, gid: profile.gid });
 
             console.log(res);
+
+            setLoading(true);
 
         }
 
@@ -148,11 +156,13 @@ export default function Profile() {
             setUserPosts(postRes.data);
 
             setProfile({ name: authRes.data.username, gid: authRes.data.googleId, email: authRes.data.email });
+
+            setLoading(false);
         }
 
         fetchData();
 
-    }, [])
+    }, [isLoading])
 
 
     return (
@@ -160,7 +170,7 @@ export default function Profile() {
             <Grid item xs={5} sm={4} md={2.5} sx={{ display: 'flex', height: '100vh', backgroundColor: '#076AE1' }}>
                 <Grid container>
                     <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar sx={{ backgroundColor: '#ffad33', width: '90px', height: '90px', fontSize: '40px', margin: 'auto', border: 'solid 2px black' }}>{profile.name ? profile.name.substring(0, 1) : ''}</Avatar>
+                        <Avatar sx={{ backgroundColor: '#9a42ff', width: '90px', height: '90px', fontSize: '40px', margin: 'auto', border: 'solid 2px black' }}>{profile.name ? profile.name.substring(0, 1) : ''}</Avatar>
                     </Grid>
                     <Grid item xs={12}>
                         <Stack sx={{ width: '100%' }} spacing={2}>
@@ -172,7 +182,7 @@ export default function Profile() {
                 </Grid>
             </Grid>
             <Grid item xs={7} sm={8} md={9.5}>
-                <Container sx={{ marginBottom: '14px' }}>
+                <Container sx={{ marginBottom: '14px' }} maxWidth='xl'>
                     <Breadcrumbs aria-label="breadcrumb">
                         <Link underline="hover" color="inherit" href="/dashboard">
                             <DynamicFeedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
@@ -181,14 +191,11 @@ export default function Profile() {
                         <Typography color="text.primary">Your Posts</Typography>
                     </Breadcrumbs>
                 </Container>
-                <Container sx={{ marginTop: '10px', marginBottom: '10px' }}>
+                <Container sx={{ marginTop: '10px', marginBottom: '10px' }} maxWidth='xl'>
                     <Stack direction='row'>
                         <Button variant="contained" endIcon={<CreateIcon />} theme={stylesheet.TypographyTheme} onClick={handleCreate}>
                             Create
                         </Button>
-                        <IconButton aria-label="refresh">
-                            <AutorenewIcon />
-                        </IconButton>
                     </Stack>
                     <Modal
                         open={formOpen}
@@ -272,43 +279,45 @@ export default function Profile() {
                         </Box>
                     </Modal>
                 </Container>
-                <Container>
-                    <Stack direction='column' spacing={2}>
+                <Container maxWidth='xl'>
+                    {isLoading ? <Box sx={{ display: 'flex', alignItems: 'center' }}><CircularProgress color='primary' sx={{ margin: 'auto' }} size={40} thickness={5} /></Box> : <Stack direction='column' spacing={2}>
                         {userPosts.map((post) => (
-                            <Card sx={{ backgroundColor: '#F1F1F1', borderRadius: '12px' }}>
-                                <CardContent>
-                                    <Stack direction='row' spacing={1} sx={{ marginBottom: '4px' }}>
-                                        <Chip icon={<HailIcon />} label={post.role} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
-                                        <Chip icon={<ApartmentIcon />} label={post.company} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
-                                        <Chip icon={<LocationOnIcon />} label={post.location} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
-                                        <Chip icon={<CurrencyRupeeIcon />} label={`${post.salary}`} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
-                                        <Chip icon={<WorkHistoryIcon />} label={`${post.experience} yrs`} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
-                                    </Stack>
-                                    <Divider />
-                                    <Typography variant="body2" theme={stylesheet.TypographyTheme}>
-                                        {post.description}
-                                    </Typography>
-                                </CardContent>
-                                <CardActions>
-                                    <IconButton aria-label="view" sx={{ color: '#33c2ff' }} href={`/post?postId=${post._id}`}>
-                                        <VisibilityIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="share" color='primary' onClick={() => { handleShare(post) }}>
-                                        <ShareIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="edit" color='success' onClick={() => { handleEdit(post) }}>
-                                        <EditIcon />
-                                    </IconButton>
-                                    <IconButton aria-label="delete" sx={{ color: '#F34B4B' }} onClick={() => { handleDelete(post) }}>
-                                        <DeleteForeverIcon />
-                                    </IconButton>
-                                </CardActions>
-                            </Card>
-                        ))}
+                            <Container maxWidth='xl'>
+                                <Card sx={{ backgroundColor: '#F1F1F1', borderRadius: '12px' }}>
+                                    <CardContent>
+                                        <Stack direction='row' spacing={1} sx={{ marginBottom: '4px' }}>
+                                            <Chip icon={<HailIcon />} label={post.role} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
+                                            <Chip icon={<ApartmentIcon />} label={post.company} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
+                                            <Chip icon={<LocationOnIcon />} label={post.location} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
+                                            <Chip icon={<CurrencyRupeeIcon />} label={`${post.salary}`} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
+                                            <Chip icon={<WorkHistoryIcon />} label={`${post.experience} yrs`} sx={{ backgroundColor: '#F1F1F1' }} theme={stylesheet.TypographyTheme} />
+                                        </Stack>
+                                        <Divider />
+                                        <Typography variant="body2" theme={stylesheet.TypographyTheme}>
+                                            {post.description}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <IconButton aria-label="view" sx={{ color: '#33c2ff' }} href={`/post?postId=${post._id}`}>
+                                            <VisibilityIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="share" color='primary' onClick={() => { handleShare(post) }}>
+                                            <ShareIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="edit" color='success' onClick={() => { handleEdit(post) }}>
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="delete" sx={{ color: '#F34B4B' }} onClick={() => { handleDelete(post) }}>
+                                            <DeleteForeverIcon />
+                                        </IconButton>
+                                    </CardActions>
+                                </Card>
+                            </Container>))}
                     </Stack>
+                    }
                 </Container>
             </Grid>
-        </Grid>
+        </Grid >
     );
 
 }

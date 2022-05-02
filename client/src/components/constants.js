@@ -1,18 +1,18 @@
 const filters = [
-    {   
+    {
         key: 1,
         filter: "Sector",
-        data : ["IT", "Core", "Finance","Non Tech", "Consultancy"]
+        data: ["IT", "Core", "Finance", "Non Tech", "Consultancy"]
     },
     {
-        key : 2,
+        key: 2,
         filter: "Role",
-        data :["SDE", "Analyst", "Lead Engineer"]
+        data: ["SDE", "Analyst", "Lead Engineer"]
     },
     {
         key: 3,
         filter: "Company",
-        data : ["Amazon", "Microsoft", "Google"]
+        data: ["Amazon", "Microsoft", "Google"]
     }
 ]
 
@@ -33,11 +33,11 @@ const FormComponentObject = () => {
 
 const posts = [
     {
-        companyName : "PhonePe",
-        role : "SDE-1",
-        costToCompany : "20lpa",
+        companyName: "PhonePe",
+        role: "SDE-1",
+        costToCompany: "20lpa",
         location: ["Bangalore"],
-        yearsOfExperience : 0
+        yearsOfExperience: 0
 
     },
     {

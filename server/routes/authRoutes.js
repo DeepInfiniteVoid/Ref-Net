@@ -1,10 +1,7 @@
 const passport = require('passport');
+const authMiddleware = require('./middleware')
 
 module.exports = (app) => {
-
-    isLoggedIn = (req, res, next) => {
-        req.user ? next() : res.redirect('/')
-    }
 
     app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -18,7 +15,7 @@ module.exports = (app) => {
         res.send('Something went Wrong')
     })
 
-    app.get('/api/current_user', isLoggedIn, (req, res) => {
+    app.get('/api/current_user', authMiddleware, (req, res) => {
 
         const current_user = req.user;
 

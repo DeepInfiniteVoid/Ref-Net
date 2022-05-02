@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const userSchema = require('./server/models/userModel');
 const cors = require('cors');
 const postSchema = require('./server/models/postModel');
+const authMiddleware = require('./server/routes/middleware');
 require('dotenv').config()
 
 const app = express();
@@ -31,7 +32,7 @@ const path = require("path")
 
 app.use(express.static(path.join(__dirname, "client", "build")))
 
-app.get("*", (req, res) => {
+app.get("*", authMiddleware, (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
